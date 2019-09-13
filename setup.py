@@ -80,10 +80,10 @@ setup(
     },
     scripts=['electrum-safecoin'],
     data_files=data_files,
-    description="Lightweight Zcash Wallet",
-    author="Thomas Voegtlin",
-    author_email="thomasv@electrum.org",
+    description="Electrum SafeCoin Wallet",
+    author="",
+    author_email="",
     license="MIT License",
-    url="https://github.com/zebra-lucky/electrum-safecoin",
-    long_description="""Lightweight Zcash Wallet"""
+    url="https://github.com/OleksandrBlack/electrum-safecoin",
+    long_description="""Electrum SafeCoin Wallet"""
 )

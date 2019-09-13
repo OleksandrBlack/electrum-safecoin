@@ -58,7 +58,7 @@ deploy:
   file:
   - build/electrum-zcash/dist/electrum-zcash-$ELECTRUM_ZCASH_VERSION-macosx.dmg
   on:
-    repo: zebra-lucky/electrum-zcash
+    repo: OleksandrBlack/electrum-zcash
     tags: true
     condition: "$TRAVIS_OS_NAME = osx"
 - provider: releases
@@ -70,6 +70,6 @@ deploy:
   - build/electrum-zcash/dist/electrum-zcash-$ELECTRUM_ZCASH_VERSION-setup-win64.exe
   - build/electrum-zcash/bin/Electrum_Zcash-$ELECTRUM_ZCASH_APK_VERSION-release-unsigned.apk
   on:
-    repo: zebra-lucky/electrum-zcash
+    repo: OleksandrBlack/electrum-zcash
     tags: true
     condition: "$TRAVIS_OS_NAME = linux"
