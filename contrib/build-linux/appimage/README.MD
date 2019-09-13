@@ -1,4 +1,4 @@
-AppImage binary for Electrum-Komodo
+AppImage binary for Electrum-SafeCoin
 ================================
 
 This assumes an Ubuntu host, but it should not be too hard to adapt to another
@@ -9,7 +9,7 @@ folder.
 
      ``` 
      $ cd contrib/deterministic-build
-     $ git clone https://github.com/KomodoPlatform/electrum-locale
+     $ git clone https://github.com/OleksandrBlack/electrum-locale
      ```
 
 1. Install Docker
@@ -24,18 +24,18 @@ folder.
 2. Build image
 
     ```
-    $ sudo docker build --no-cache -t electrum-komodo-appimage-builder-img contrib/build-linux/appimage
+    $ sudo docker build --no-cache -t electrum-safecoin-appimage-builder-img contrib/build-linux/appimage
     ```
 
 3. Build binary
 
     ```
     $ sudo docker run -it \
-        --name electrum-komodo-appimage-builder-cont \
-        -v $PWD:/opt/electrum-komodo \
+        --name electrum-safecoin-appimage-builder-cont \
+        -v $PWD:/opt/electrum-safecoin \
         --rm \
-        --workdir /opt/electrum-komodo/contrib/build-linux/appimage \
-        electrum-komodo-appimage-builder-img \
+        --workdir /opt/electrum-safecoin/contrib/build-linux/appimage \
+        electrum-safecoin-appimage-builder-img \
         ./build.sh
     ```
 

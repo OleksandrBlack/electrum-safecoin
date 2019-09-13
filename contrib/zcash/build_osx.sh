@@ -24,8 +24,8 @@ VERSION=`git describe --tags`
 # Paramterize
 PYTHON_VERSION=3.7.3
 BUILDDIR=/tmp/electrum-build
-PACKAGE='Komodo Electrum'
-GIT_REPO=https://github.com/komodoplatform/electrum-komodo
+PACKAGE='SafeCoin Electrum'
+GIT_REPO=https://github.com/OleksandrBlack/electrum-safecoin
 
 info "Installing Python $PYTHON_VERSION"
 export PATH="~/.pyenv/bin:~/.pyenv/shims:~/Library/Python/3.6/bin:$PATH"
@@ -91,4 +91,4 @@ info "Building binary"
 pyinstaller --noconfirm --ascii --name $VERSION contrib/zcash/osx.spec || fail "Could not build binary"
 
 info "Creating .DMG"
-hdiutil create -fs HFS+ -volname 'Komodo Electrum' -srcfolder 'dist/Komodo Electrum.app' dist/komodo-electrum-$VERSION.dmg || fail "Could not create .DMG"
+hdiutil create -fs HFS+ -volname 'SafeCoin Electrum' -srcfolder 'dist/SafeCoin Electrum.app' dist/safecoin-electrum-$VERSION.dmg || fail "Could not create .DMG"

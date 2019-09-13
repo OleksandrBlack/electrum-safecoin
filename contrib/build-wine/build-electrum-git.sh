@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAME_ROOT=electrum-komodo
+NAME_ROOT=electrum-safecoin
 PYTHON_VERSION=3.5.4
 
 # These settings probably don't need any change
@@ -19,14 +19,14 @@ set -e
 mkdir -p tmp
 cd tmp
 
-for repo in electrum-komodo electrum-locale electrum-icons; do
+for repo in electrum-safecoin electrum-locale electrum-icons; do
     if [ -d $repo ]; then
 	cd $repo
 	git pull
 	git checkout master
 	cd ..
     else
-	URL=https://github.com/komodoplatform/$repo.git
+	URL=https://github.com/OleksandrBlack/$repo.git
 	git clone -b master $URL $repo
     fi
 done
@@ -39,7 +39,7 @@ for i in ./locale/*; do
 done
 popd
 
-pushd electrum-komodo
+pushd electrum-safecoin
 if [ ! -z "$1" ]; then
     git checkout $1
 fi
@@ -50,9 +50,9 @@ find -exec touch -d '2000-11-11T11:11:11+00:00' {} +
 popd
 
 rm -rf $WINEPREFIX/drive_c/electrum
-cp -r electrum-komodo $WINEPREFIX/drive_c/electrum
-cp -r electrum-komodo/icons $WINEPREFIX/drive_c/electrum/icons
-cp electrum-komodo/LICENCE .
+cp -r electrum-safecoin $WINEPREFIX/drive_c/electrum
+cp -r electrum-safecoin/icons $WINEPREFIX/drive_c/electrum/icons
+cp electrum-safecoin/LICENCE .
 cp -r electrum-locale/locale $WINEPREFIX/drive_c/electrum/lib/
 cp electrum-icons/icons_rc.py $WINEPREFIX/drive_c/electrum/gui/qt/
 
