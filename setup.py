@@ -18,7 +18,7 @@ with open('contrib/requirements/requirements-hw.txt') as f:
 version = imp.load_source('version', 'lib/version.py')
 
 if sys.version_info[:3] < (3, 4, 0):
-    sys.exit("Error: Electrum-Zcash requires Python version >= 3.4.0...")
+    sys.exit("Error: Electrum-SafeCoin requires Python version >= 3.4.0...")
 
 data_files = []
 
@@ -36,12 +36,12 @@ if platform.system() in ['Linux', 'FreeBSD', 'DragonFly']:
         else:
             usr_share = os.path.expanduser('~/.local/share')
     data_files += [
-        (os.path.join(usr_share, 'applications/'), ['electrum-zcash.desktop']),
-        (os.path.join(usr_share, icons_dirname), ['icons/electrum-zcash.png'])
+        (os.path.join(usr_share, 'applications/'), ['electrum-safecoin.desktop']),
+        (os.path.join(usr_share, icons_dirname), ['icons/electrum-safecoin.png'])
     ]
 
 setup(
-    name="Electrum-Zcash",
+    name="Electrum-SafeCoin",
     version=version.ELECTRUM_VERSION,
     install_requires=requirements,
     extras_require={
@@ -78,12 +78,12 @@ setup(
             'locale/*/LC_MESSAGES/electrum.mo',
         ]
     },
-    scripts=['electrum-zcash'],
+    scripts=['electrum-safecoin'],
     data_files=data_files,
     description="Lightweight Zcash Wallet",
     author="Thomas Voegtlin",
     author_email="thomasv@electrum.org",
     license="MIT License",
-    url="https://github.com/zebra-lucky/electrum-zcash",
+    url="https://github.com/zebra-lucky/electrum-safecoin",
     long_description="""Lightweight Zcash Wallet"""
 )

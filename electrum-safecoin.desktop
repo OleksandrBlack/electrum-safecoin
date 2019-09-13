@@ -3,7 +3,7 @@
 
 [Desktop Entry]
 Comment=SafeCoin wallet
-Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-zcash %u"
+Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-safecoin %u"
 GenericName[en_US]=Electrum SafeCoin Wallet
 GenericName=Safecoin Wallet
 Icon=electrum-safecoin
@@ -11,12 +11,12 @@ Name[en_US]=Electrum SafeCoin Wallet
 Name=Electrum SafeCoin Wallet
 Categories=Finance;Network;
 StartupNotify=true
-StartupWMClass=electrum-zcash
+StartupWMClass=electrum-safecoin
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/zcash;
 Actions=Testnet;
 
 [Desktop Action Testnet]
-Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-zcash --testnet %u"
+Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-safecoin --testnet %u"
 Name=Testnet mode

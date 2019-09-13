@@ -244,7 +244,7 @@ class ElectrumWindow(App):
 
         App.__init__(self)#, **kwargs)
 
-        title = _('Electrum-Zcash App')
+        title = _('Electrum-SafeCoin App')
         self.electrum_config = config = kwargs.get('config', None)
         self.language = config.get('language', 'en')
         self.network = network = kwargs.get('network', None)
@@ -497,7 +497,7 @@ class ElectrumWindow(App):
             else:
                 self.load_wallet(wallet)
         else:
-            Logger.debug('Electrum-Zcash: Wallet not found. Launching install wizard')
+            Logger.debug('Electrum-SafeCoin: Wallet not found. Launching install wizard')
             storage = WalletStorage(path)
             wizard = Factory.InstallWizard(self.electrum_config, storage)
             wizard.bind(on_wizard_complete=self.on_wizard_complete)
@@ -591,7 +591,7 @@ class ElectrumWindow(App):
         self.receive_screen = None
         self.requests_screen = None
         self.address_screen = None
-        self.icon = "icons/electrum-zcash.png"
+        self.icon = "icons/electrum-safecoin.png"
         self.tabs = self.root.ids['tabs']
 
     def update_interfaces(self, dt):
@@ -684,7 +684,7 @@ class ElectrumWindow(App):
                 from plyer import notification
             icon = (os.path.dirname(os.path.realpath(__file__))
                     + '/../../' + self.icon)
-            notification.notify('Electrum-Zcash', message,
+            notification.notify('Electrum-SafeCoin', message,
                             app_icon=icon, app_name='Electrum')
         except ImportError:
             Logger.Error('Notification: needs plyer; `sudo pip install plyer`')
