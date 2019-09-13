@@ -666,11 +666,11 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
     def base_unit(self):
         assert self.decimal_point in [2, 5, 8]
         if self.decimal_point == 2:
-            return 'uKMD'
+            return 'uSAFE'
         if self.decimal_point == 5:
-            return 'mKMD'
+            return 'mSAFE'
         if self.decimal_point == 8:
-            return 'KMD'
+            return 'SAFE'
         raise Exception('Unknown base unit')
 
     def connect_fields(self, window, btc_e, fiat_e, fee_e):
@@ -1177,10 +1177,10 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
 
         self.connect_fields(self, self.amount_e, self.fiat_send_e, self.fee_e)
 
-        #vbox_feelabel = QVBoxLayout()
-        #vbox_feelabel.addWidget(self.fee_e_label)
-        #vbox_feelabel.addStretch(1)
-        #grid.addLayout(vbox_feelabel, 5, 0)
+        vbox_feelabel = QVBoxLayout()
+        vbox_feelabel.addWidget(self.fee_e_label)
+        vbox_feelabel.addStretch(1)
+        grid.addLayout(vbox_feelabel, 5, 0)
 
         self.fee_adv_controls = QWidget()
         hbox = QHBoxLayout(self.fee_adv_controls)
@@ -1191,11 +1191,11 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         hbox.addWidget(self.feerounding_icon, Qt.AlignLeft)
         hbox.addStretch(1)
 
-        #vbox_feecontrol = QVBoxLayout()
-        #vbox_feecontrol.addWidget(self.fee_adv_controls)
-        #vbox_feecontrol.addWidget(self.fee_slider)
+        vbox_feecontrol = QVBoxLayout()
+        vbox_feecontrol.addWidget(self.fee_adv_controls)
+        vbox_feecontrol.addWidget(self.fee_slider)
 
-        #grid.addLayout(vbox_feecontrol, 5, 1, 1, -1)
+        grid.addLayout(vbox_feecontrol, 5, 1, 1, -1)
 
         if not self.config.get('show_fee', False):
             self.fee_adv_controls.setVisible(False)
@@ -2720,9 +2720,9 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         SSL_id_e.setReadOnly(True)
         id_widgets.append((SSL_id_label, SSL_id_e))
 
-        units = ['KMD', 'mKMD', 'uKMD']
+        units = ['SAFE', 'mSAFE', 'uSAFE']
         msg = (_('Base unit of your wallet.')
-               + '\n1 KMD = 1000 mKMD. 1 mKMD = 1000 uKMD.\n'
+               + '\n1 SAFE = 1000 mSAFE. 1 mSAFE = 1000 uSAFE.\n'
                + _('This setting affects the Send tab, and all balance related fields.'))
         unit_label = HelpLabel(_('Base unit') + ':', msg)
         unit_combo = QComboBox()
@@ -2734,11 +2734,11 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
                 return
             edits = self.amount_e, self.fee_e, self.receive_amount_e
             amounts = [edit.get_amount() for edit in edits]
-            if unit_result == 'KMD':
+            if unit_result == 'SAFE':
                 self.decimal_point = 8
-            elif unit_result == 'mKMD':
+            elif unit_result == 'mSAFE':
                 self.decimal_point = 5
-            elif unit_result == 'uKMD':
+            elif unit_result == 'uSAFE':
                 self.decimal_point = 2
             else:
                 raise Exception('Unknown base unit')
@@ -2951,7 +2951,7 @@ class ElectrumWindow(QMainWindow, MessageBoxMixin, PrintError):
         fiat_widgets.append((QLabel(_('Source')), ex_combo))
 
         tabs_info = [
-            #(fee_widgets, _('Fees')),
+            (fee_widgets, _('Fees')),
             (tx_widgets, _('Transactions')),
             (gui_widgets, _('Appearance')),
             (fiat_widgets, _('Fiat')),
