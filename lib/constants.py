@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2018 The Electrum developers
 #
 # Permission is hereby granted, free of charge, to any person
@@ -41,10 +41,8 @@ class BitcoinMainnet:
 
     TESTNET = False
     WIF_PREFIX = 0xBD
-    #ADDRTYPE_P2PKH = 0x3c
-    #ADDRTYPE_P2SH = 0x55
-    ADDRTYPE_P2PKH = [0x3D]
-    ADDRTYPE_P2SH = [0x56]
+    ADDRTYPE_P2PKH = bytes.fromhex('3D')
+    ADDRTYPE_P2SH = bytes.fromhex('56')
     GENESIS = "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71"
     DEFAULT_PORTS = {'t': '10017', 's': '10018'}
     DEFAULT_SERVERS = read_json('servers.json', {})
@@ -56,7 +54,7 @@ class BitcoinMainnet:
     XPUB_HEADERS = {
         'standard':    0x0488B21F,  # xpub
     }
-    OVERWINTER_HEIGHT = 2
+    OVERWINTER_HEIGHT = 547422
 
 
 class BitcoinTestnet:
@@ -65,7 +63,7 @@ class BitcoinTestnet:
     WIF_PREFIX = 0xEF
     ADDRTYPE_P2PKH = bytes.fromhex('1D25')
     ADDRTYPE_P2SH = bytes.fromhex('1CBA')
-    GENESIS = "05a60a92d99d85997cce3b87616c089f6124d7342af37106edc76126334a2c38"
+    GENESIS = "03e1c4bb705c871bf9bfda3e74b7f8f86bff267993c215a89d5795e3708e5e1f"
     DEFAULT_PORTS = {'t': '51021', 's': '51022'}
     DEFAULT_SERVERS = read_json('servers_testnet.json', {})
     CHECKPOINTS = read_json('checkpoints_testnet.json', [])
@@ -76,7 +74,7 @@ class BitcoinTestnet:
     XPUB_HEADERS = {
         'standard':    0x043587cf,  # tpub
     }
-    OVERWINTER_HEIGHT = 207500
+    OVERWINTER_HEIGHT = 476969
 
 
 class BitcoinRegtest(BitcoinTestnet):
