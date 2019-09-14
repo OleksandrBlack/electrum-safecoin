@@ -3,17 +3,17 @@ import hashlib
 import sys
 import traceback
 
-from electrum_zcash import bitcoin
-from electrum_zcash import constants
-from electrum_zcash.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
+from electrum import bitcoin
+from electrum import constants
+from electrum.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
                                    b58_address_to_hash160,
                                    hash160_to_b58_address)
-from electrum_zcash.i18n import _
-from electrum_zcash.plugins import BasePlugin
-from electrum_zcash.keystore import Hardware_KeyStore
-from electrum_zcash.transaction import Transaction
+from electrum.i18n import _
+from electrum.plugins import BasePlugin
+from electrum.keystore import Hardware_KeyStore
+from electrum.transaction import Transaction
 from ..hw_wallet import HW_PluginBase
-from electrum_zcash.util import print_error, is_verbose, bfh, bh2u, versiontuple
+from electrum.util import print_error, is_verbose, bfh, bh2u, versiontuple
 
 
 def setAlternateCoinVersions(self, regular, p2sh):
@@ -27,7 +27,7 @@ try:
     from btchip.btchipUtils import compress_public_key,format_transaction, get_regular_input_script, get_p2sh_input_script
     from btchip.btchipFirmwareWizard import checkFirmware, updateFirmware
     from btchip.btchipException import BTChipException
-    from .btchip_zcash import btchip_zcash, zcashTransaction
+    from .btchip_safecoin import btchip_safecoin, safecoinTransaction
     btchip.setAlternateCoinVersions = setAlternateCoinVersions
     BTCHIP = True
     BTCHIP_DEBUG = is_verbose
@@ -47,7 +47,7 @@ OVERWINTER_SUPPORT = '1.3.3'
 
 class Ledger_Client():
     def __init__(self, hidDevice):
-        self.dongleObject = btchip_zcash(hidDevice)
+        self.dongleObject = btchip_safecoin(hidDevice)
         self.preflightDone = False
 
     def is_pairable(self):
@@ -196,7 +196,7 @@ class Ledger_Client():
                 self.perform_hw1_preflight()
             except BTChipException as e:
                 if (e.sw == 0x6d00 or e.sw == 0x6700):
-                    raise Exception(_("Device not in Zcash mode")) from e
+                    raise Exception(_("Device not in Safecoin mode")) from e
                 raise e
             self.preflightDone = True
 
@@ -399,14 +399,14 @@ class Ledger_KeyStore(Hardware_KeyStore):
             for utxo in inputs:
                 sequence = int_to_hex(utxo[5], 4)
                 if tx.overwintered:
-                    txtmp = zcashTransaction(bfh(utxo[0]))
+                    txtmp = safecoinTransaction(bfh(utxo[0]))
                     tmp = bfh(utxo[3])[::-1]
                     tmp += bfh(int_to_hex(utxo[1], 4))
                     tmp += txtmp.outputs[utxo[1]].amount
                     chipInputs.append({'value' : tmp, 'sequence' : sequence})
                     redeemScripts.append(bfh(utxo[2]))
                 elif not p2shTransaction:
-                    txtmp = zcashTransaction(bfh(utxo[0]))
+                    txtmp = safecoinTransaction(bfh(utxo[0]))
                     trustedInput = self.get_client().getTrustedInput(txtmp, utxo[1])
                     trustedInput['sequence'] = sequence
                     chipInputs.append(trustedInput)

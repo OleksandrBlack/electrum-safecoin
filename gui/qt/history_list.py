@@ -26,13 +26,13 @@
 import webbrowser
 import datetime
 
-from electrum_zcash.wallet import AddTransactionException, TX_HEIGHT_LOCAL
+from electrum.wallet import AddTransactionException, TX_HEIGHT_LOCAL
 from .util import *
-from electrum_zcash.i18n import _
-from electrum_zcash.util import block_explorer_URL, profiler
+from electrum.i18n import _
+from electrum.util import block_explorer_URL, profiler
 
 try:
-    from electrum_zcash.plot import plot_history, NothingToPlotException
+    from electrum.plot import plot_history, NothingToPlotException
 except:
     plot_history = None
 
@@ -414,5 +414,5 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
                 for line in lines:
                     transaction.writerow(line)
             else:
-                from electrum_zcash.util import json_encode
+                from electrum.util import json_encode
                 f.write(json_encode(history))

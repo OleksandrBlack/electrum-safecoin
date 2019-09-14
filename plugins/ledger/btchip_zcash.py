@@ -7,11 +7,11 @@ from btchip.bitcoinVarint import readVarint, writeVarint
 from btchip.btchipHelpers import (parse_bip32_path, writeUint32BE,
                                   writeHexAmountBE, btc_to_satoshi)
 
-from electrum_zcash.transaction import (OVERWINTERED_VERSION_GROUP_ID,
+from electrum.transaction import (OVERWINTERED_VERSION_GROUP_ID,
                                         SAPLING_VERSION_GROUP_ID)
 
 
-class zcashTransaction:
+class safecoinTransaction:
 
     def __init__(self, data=None):
         self.version = ''
@@ -73,7 +73,7 @@ class zcashTransaction:
         return result
 
 
-class btchip_zcash(btchip):
+class btchip_safecoin(btchip):
 
     def startUntrustedTransaction(self, newTransaction, inputIndex, outputList,
                                   redeemScript, version=0x02,
@@ -156,7 +156,7 @@ class btchip_zcash(btchip):
         outputs = None
         if rawTx is not None:
             try:
-                fullTx = zcashTransaction(bytearray(rawTx))
+                fullTx = safecoinTransaction(bytearray(rawTx))
                 outputs = fullTx.serializeOutputs()
                 if len(donglePath) != 0:
                     apdu = [self.BTCHIP_CLA,

@@ -38,15 +38,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import PyQt5.QtCore as QtCore
 
-from electrum_zcash.i18n import _, set_language
-from electrum_zcash.plugins import run_hook
-from electrum_zcash import WalletStorage
-# from electrum_zcash.synchronizer import Synchronizer
-# from electrum_zcash.verifier import SPV
-# from electrum_zcash.util import DebugMem
-from electrum_zcash.util import (UserCancelled, print_error,
+from electrum.i18n import _, set_language
+from electrum.plugins import run_hook
+from electrum import WalletStorage
+# from electrum.synchronizer import Synchronizer
+# from electrum.verifier import SPV
+# from electrum.util import DebugMem
+from electrum.util import (UserCancelled, print_error,
                                 WalletFileException, BitcoinException)
-# from electrum_zcash.wallet import Abstract_Wallet
+# from electrum.wallet import Abstract_Wallet
 
 from .installwizard import InstallWizard, GoBack
 

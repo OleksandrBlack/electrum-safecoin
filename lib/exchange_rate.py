@@ -125,7 +125,7 @@ class BitcoinAverage(ExchangeBase):
 
     def get_rates(self, ccy):
         json = self.get_json('apiv2.bitcoinaverage.com',
-                             '/indices/local/ticker/ZEC%s' % ccy)
+                             '/indices/local/ticker/SAFE%s' % ccy)
         return {ccy: Decimal(json['last'])}
 
 
@@ -134,7 +134,7 @@ class BitcoinAverage(ExchangeBase):
 
     def request_history(self, ccy):
         history = self.get_json('apiv2.bitcoinaverage.com',
-                               "/indices/local/history/ZEC%s"
+                               "/indices/local/history/SAFE%s"
                                "?period=alltime&format=json" % ccy)
         return dict([(h['time'][:10], h['average']) for h in history])
 
@@ -155,8 +155,8 @@ class Poloniex(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('poloniex.com', '/public?command=returnTicker')
         quote_currencies = {}
-        zcash_ticker = json.get('BTC_ZEC')
-        quote_currencies['BTC'] = Decimal(zcash_ticker['last'])
+        safecoin_ticker = json.get('BTC_SAFE')
+        quote_currencies['BTC'] = Decimal(safecoin_ticker['last'])
         return quote_currencies
 
 
@@ -371,6 +371,6 @@ class FxThread(ThreadJob):
         return self.fiat_value(satoshis, self.history_rate(d_t))
 
     def timestamp_rate(self, timestamp):
-        from electrum_zcash.util import timestamp_to_datetime
+        from electrum.util import timestamp_to_datetime
         date = timestamp_to_datetime(timestamp)
         return self.history_rate(date)

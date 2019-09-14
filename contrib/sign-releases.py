@@ -27,9 +27,9 @@ Manual signing:
     jarsigner -verbose \
         -tsa http://sha256timestamp.ws.symantec.com/sha256/timestamp \
         -sigalg SHA1withRSA -digestalg SHA1 \
-        -sigfile zcash-electrum \
+        -sigfile safecoin-electrum \
         -keystore ~/.jks/keystore \
-        Electrum_Zcash-3.0.6.1-release-unsigned.apk \
+        Electrum_Safecoin-3.0.6.1-release-unsigned.apk \
         electrum.z.cash
 
 Zipalign from Android SDK build tools is also required (set path to bin in
@@ -48,8 +48,8 @@ settings file or with key -z). To install:
 Manual zip aligning:
 
     android-sdk-linux/build-tools/27.0.3/zipalign -v 4 \
-        Electrum_Zcash-3.0.6.1-release-unsigned.apk \
-        Electrum_Zcash-3.0.6.1-release.apk
+        Electrum_Safecoin-3.0.6.1-release-unsigned.apk \
+        Electrum_Safecoin-3.0.6.1-release.apk
 
 
 
@@ -164,12 +164,12 @@ JARSIGNER_ARGS = [
     'jarsigner', '-verbose',
     '-tsa', 'http://sha256timestamp.ws.symantec.com/sha256/timestamp',
     '-sigalg', 'SHA1withRSA', '-digestalg', 'SHA1',
-    '-sigfile', 'zcash-electrum',
+    '-sigfile', 'safecoin-electrum',
     '-storepass:env', JKS_STOREPASS,
     '-keypass:env', JKS_KEYPASS,
 ]
-UNSIGNED_APK_PATTERN = re.compile('^Electrum_Zcash-(.*)-release-unsigned.apk$')
-SIGNED_APK_TEMPLATE = 'Electrum_Zcash-{version}-release.apk'
+UNSIGNED_APK_PATTERN = re.compile('^Electrum_Safecoin-(.*)-release-unsigned.apk$')
+SIGNED_APK_TEMPLATE = 'Electrum_Safecoin-{version}-release.apk'
 
 
 os.environ['QUILT_PATCHES'] = 'debian/patches'

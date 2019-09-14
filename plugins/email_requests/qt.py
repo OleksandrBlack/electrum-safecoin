@@ -42,11 +42,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import (QVBoxLayout, QLabel, QGridLayout, QLineEdit,
                              QInputDialog)
 
-from electrum_zcash.plugins import BasePlugin, hook
-from electrum_zcash.paymentrequest import PaymentRequest
-from electrum_zcash.i18n import _
-from electrum_zcash.util import PrintError
-from electrum_zcash_gui.qt.util import (EnterButton, Buttons, CloseButton, OkButton,
+from electrum.plugins import BasePlugin, hook
+from electrum.paymentrequest import PaymentRequest
+from electrum.i18n import _
+from electrum.util import PrintError
+from electrum_gui.qt.util import (EnterButton, Buttons, CloseButton, OkButton,
                                        WindowModalDialog, get_parent_main_window)
 
 
@@ -77,7 +77,7 @@ class Processor(threading.Thread, PrintError):
                 p = [p]
                 continue
             for item in p:
-                if item.get_content_type() == "application/zcash-paymentrequest":
+                if item.get_content_type() == "application/safecoin-paymentrequest":
                     pr_str = item.get_payload()
                     pr_str = base64.b64decode(pr_str)
                     self.on_receive(pr_str)
@@ -101,7 +101,7 @@ class Processor(threading.Thread, PrintError):
         msg['Subject'] = message
         msg['To'] = recipient
         msg['From'] = self.username
-        part = MIMEBase('application', "zcash-paymentrequest")
+        part = MIMEBase('application', "safecoin-paymentrequest")
         part.set_payload(payment_request)
         encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="payreq.zec"')
@@ -166,7 +166,7 @@ class Plugin(BasePlugin):
         menu.addAction(_("Send via e-mail"), lambda: self.send(window, addr))
 
     def send(self, window, addr):
-        from electrum_zcash import paymentrequest
+        from electrum import paymentrequest
         r = window.wallet.receive_requests.get(addr)
         message = r.get('memo', '')
         if r.get('signature'):

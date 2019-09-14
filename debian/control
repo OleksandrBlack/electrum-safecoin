@@ -33,14 +33,14 @@ Depends:
  python3-btchip (>= 0.1.26),
  ${misc:Depends},
  ${python3:Depends},
-Description: Easy to use Zcash client - Python module
- This package provides a lightweight Zcash client which protects
- you from losing your Zcash coins in a backup mistake or computer
+Description: Easy to use Safecoin client - Python module
+ This package provides a lightweight Safecoin client which protects
+ you from losing your Safecoin coins in a backup mistake or computer
  failure. Also, Electrum-SafeCoin does not require waiting time because it does
- not download the Zcash blockchain.
+ not download the Safecoin blockchain.
  .
- This package provides the "electrum_zcash" Python 3 module which can be used
- to access a Zcash wallet from Python programs.
+ This package provides the "electrum" Python 3 module which can be used
+ to access a Safecoin wallet from Python programs.
 
 Package: electrum-safecoin
 Architecture: all
@@ -49,11 +49,11 @@ Depends:
  ${python3:Depends},
  python3-electrum-safecoin (= ${binary:Version}),
 Recommends: python3-pyqt5
-Description: Easy to use Zcash client
- This package provides a lightweight Zcash client which protects
- you from losing your Zcash coins in a backup mistake or computer
+Description: Easy to use Safecoin client
+ This package provides a lightweight Safecoin client which protects
+ you from losing your Safecoin coins in a backup mistake or computer
  failure. Also, Electrum-SafeCoin does not require waiting time because it does
- not download the Zcash blockchain.
+ not download the Safecoin blockchain.
  .
  Features of Electrum-SafeCoin:
  .
@@ -70,7 +70,7 @@ Description: Easy to use Zcash client
      will synchronize automatically.
    * Cold Storage: Sign transactions from a computer that is always
      offline. Broadcast them using a machine that does not have your keys.
-   * Reachable: You can export your private keys into other Zcash
+   * Reachable: You can export your private keys into other Safecoin
      clients.
    * Established: Electrum-SafeCoin is open source and was first released in
      November 2011.

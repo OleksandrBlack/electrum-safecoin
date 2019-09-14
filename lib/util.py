@@ -313,7 +313,7 @@ def android_data_dir():
     return PythonActivity.mActivity.getFilesDir().getPath() + '/data'
 
 def android_headers_dir():
-    d = android_ext_dir() + '/cash.z.electrum.electrum_zcash'
+    d = android_ext_dir() + '/cash.z.electrum.electrum'
     if not os.path.exists(d):
         os.mkdir(d)
     return d
@@ -549,12 +549,12 @@ def parse_URI(uri, on_pr=None):
 
     if ':' not in uri:
         if not bitcoin.is_address(uri):
-            raise Exception("Not a Zcash address")
+            raise Exception("Not a Safecoin address")
         return {'address': uri}
 
     u = urllib.parse.urlparse(uri)
-    if u.scheme != 'zcash':
-        raise Exception("Not a Zcash URI")
+    if u.scheme != 'safecoin':
+        raise Exception("Not a Safecoin URI")
     address = u.path
 
     # python for android fails to parse query
@@ -571,7 +571,7 @@ def parse_URI(uri, on_pr=None):
     out = {k: v[0] for k, v in pq.items()}
     if address:
         if not bitcoin.is_address(address):
-            raise Exception("Invalid Zcash address:" + address)
+            raise Exception("Invalid Safecoin address:" + address)
         out['address'] = address
     if 'amount' in out:
         am = out['amount']
@@ -621,7 +621,7 @@ def create_URI(addr, amount, message):
         query.append('amount=%s'%format_satoshis_plain(amount))
     if message:
         query.append('message=%s'%urllib.parse.quote(message))
-    p = urllib.parse.ParseResult(scheme='zcash', netloc='', path=addr, params='', query='&'.join(query), fragment='')
+    p = urllib.parse.ParseResult(scheme='safecoin', netloc='', path=addr, params='', query='&'.join(query), fragment='')
     return urllib.parse.urlunparse(p)
 
 
