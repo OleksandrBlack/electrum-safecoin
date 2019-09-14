@@ -43,8 +43,8 @@ class BitcoinMainnet:
     WIF_PREFIX = 0xBD
     ADDRTYPE_P2PKH = bytes.fromhex('3D')
     ADDRTYPE_P2SH = bytes.fromhex('56')
-    GENESIS = "027e3758c3a65b12aa1046462b486d0a63bfa1beae327897f56c5cfb7daaae71"
-    DEFAULT_PORTS = {'t': '10017', 's': '10018'}
+    GENESIS = "09f5deffb9c816d82b8f696befa84681509274288c4529f213aeeac57999e8c9"
+    DEFAULT_PORTS = {'t': '10001', 's': '10002'}
     DEFAULT_SERVERS = read_json('servers.json', {})
     CHECKPOINTS = read_json('checkpoints.json', [])
 
