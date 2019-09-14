@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2013 ecdsa@github
 #
 # Permission is hereby granted, free of charge, to any person
@@ -26,12 +26,12 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from electrum.i18n import _
+from electrum_safecoin.i18n import _
 from .util import *
 import re
 import math
 
-from electrum.plugins import run_hook
+from electrum_safecoin.plugins import run_hook
 
 def check_password_strength(password):
 

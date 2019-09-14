@@ -44,24 +44,24 @@ if [ ! -z "$1" ]; then
     git checkout $1
 fi
 
-VERSION=`git describe --tags`
+#VERSION=`git describe --tags`
+VERSION=3.2.0
 echo "Last commit: $VERSION"
 find -exec touch -d '2000-11-11T11:11:11+00:00' {} +
 popd
 
-rm -rf $WINEPREFIX/drive_c/electrum
-cp -r electrum-safecoin $WINEPREFIX/drive_c/electrum
-cp -r electrum-safecoin/icons $WINEPREFIX/drive_c/electrum/icons
+rm -rf $WINEPREFIX/drive_c/electrum_safecoin
+cp -r electrum-safecoin $WINEPREFIX/drive_c/electrum_safecoin
 cp electrum-safecoin/LICENCE .
-cp -r electrum-locale/locale $WINEPREFIX/drive_c/electrum/lib/
-cp electrum-icons/icons_rc.py $WINEPREFIX/drive_c/electrum/gui/qt/
+cp -r electrum-locale/locale $WINEPREFIX/drive_c/electrum_safecoin/lib/
+cp electrum-icons/icons_rc.py $WINEPREFIX/drive_c/electrum_safecoin/gui/qt/
 
 # Install frozen dependencies
 $PYTHON -m pip install -r ../../deterministic-build/requirements.txt
 
 $PYTHON -m pip install -r ../../deterministic-build/requirements-hw.txt
 
-pushd $WINEPREFIX/drive_c/electrum
+pushd $WINEPREFIX/drive_c/electrum_safecoin
 $PYTHON setup.py install
 popd
 

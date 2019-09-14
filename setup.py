@@ -18,7 +18,7 @@ with open('contrib/requirements/requirements-hw.txt') as f:
 version = imp.load_source('version', 'lib/version.py')
 
 if sys.version_info[:3] < (3, 4, 0):
-    sys.exit("Error: Electrum-SafeCoin requires Python version >= 3.4.0...")
+    sys.exit("Error: Electrum-Safecoin requires Python version >= 3.4.0...")
 
 data_files = []
 
@@ -41,35 +41,35 @@ if platform.system() in ['Linux', 'FreeBSD', 'DragonFly']:
     ]
 
 setup(
-    name="Electrum-SafeCoin",
+    name="Electrum-Safecoin",
     version=version.ELECTRUM_VERSION,
     install_requires=requirements,
     extras_require={
         'full': requirements_hw + ['pycryptodomex'],
     },
     packages=[
-        'electrum',
-        'electrum_gui',
-        'electrum_gui.qt',
-        'electrum_plugins',
-        'electrum_plugins.audio_modem',
-        'electrum_plugins.cosigner_pool',
-        'electrum_plugins.email_requests',
-        'electrum_plugins.hw_wallet',
-        'electrum_plugins.keepkey',
-        'electrum_plugins.labels',
-        'electrum_plugins.ledger',
-        'electrum_plugins.trezor',
-        'electrum_plugins.digitalbitbox',
-        'electrum_plugins.virtualkeyboard',
+        'electrum_safecoin',
+        'electrum_safecoin_gui',
+        'electrum_safecoin_gui.qt',
+        'electrum_safecoin_plugins',
+        'electrum_safecoin_plugins.audio_modem',
+        'electrum_safecoin_plugins.cosigner_pool',
+        'electrum_safecoin_plugins.email_requests',
+        'electrum_safecoin_plugins.hw_wallet',
+        'electrum_safecoin_plugins.keepkey',
+        'electrum_safecoin_plugins.labels',
+        'electrum_safecoin_plugins.ledger',
+        'electrum_safecoin_plugins.trezor',
+        'electrum_safecoin_plugins.digitalbitbox',
+        'electrum_safecoin_plugins.virtualkeyboard',
     ],
     package_dir={
-        'electrum': 'lib',
-        'electrum_gui': 'gui',
-        'electrum_plugins': 'plugins',
+        'electrum_safecoin': 'lib',
+        'electrum_safecoin_gui': 'gui',
+        'electrum_safecoin_plugins': 'plugins',
     },
     package_data={
-        'electrum': [
+        'electrum_safecoin': [
             'servers.json',
             'servers_testnet.json',
             'servers_regtest.json',
@@ -80,10 +80,10 @@ setup(
     },
     scripts=['electrum-safecoin'],
     data_files=data_files,
-    description="Electrum SafeCoin Wallet",
-    author="",
-    author_email="",
+    description="Lightweight Safecoin Wallet",
+    author="Thomas Voegtlin",
+    author_email="thomasv@electrum.org",
     license="MIT License",
     url="https://github.com/OleksandrBlack/electrum-safecoin",
-    long_description="""Electrum SafeCoin Wallet"""
+    long_description="""Lightweight Safecoin Wallet"""
 )

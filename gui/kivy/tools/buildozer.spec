@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = Electrum-SafeCoin
+title = Electrum-Safecoin
 
 # (str) Package name
-package.name = Electrum-SafeCoin
+package.name = Electrum-Safecoin
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = cash.z.electrum

@@ -1,4 +1,4 @@
-# Electrum - Lightweight Bitcoin Client
+# Electrum - Lightweight Safecoin Client
 # Copyright (c) 2011-2016 Thomas Voegtlin
 #
 # Permission is hereby granted, free of charge, to any person
@@ -37,7 +37,7 @@ import socks
 from . import util
 from . import bitcoin
 from .bitcoin import *
-from .blockchain import HDR_LEN, CHUNK_LEN
+from .blockchain import CHUNK_LEN, get_header_size
 from . import constants
 from .interface import Connection, Interface
 from . import blockchain
@@ -84,7 +84,7 @@ def filter_version(servers):
     return {k: v for k, v in servers.items() if is_recent(v.get('version'))}
 
 
-def filter_protocol(hostmap, protocol = 't'):
+def filter_protocol(hostmap, protocol = 's'):
     '''Filters the hostmap for those implementing protocol.
     The result is a list in serialized form.'''
     eligible = []
@@ -94,7 +94,7 @@ def filter_protocol(hostmap, protocol = 't'):
             eligible.append(serialize_server(host, port, protocol))
     return eligible
 
-def pick_random_server(hostmap = None, protocol = 't', exclude_set = set()):
+def pick_random_server(hostmap = None, protocol = 's', exclude_set = set()):
     if hostmap is None:
         hostmap = constants.net.DEFAULT_SERVERS
     eligible = list(set(filter_protocol(hostmap, protocol)) - exclude_set)
@@ -586,7 +586,6 @@ class Network(util.DaemonThread):
     def process_responses(self, interface):
         responses = interface.get_responses()
         for request, response in responses:
-            print(response)
             if request:
                 method, params, message_id = request
                 k = self.get_index(method, params)
@@ -723,8 +722,7 @@ class Network(util.DaemonThread):
         interface.mode = 'default'
         interface.request = None
         self.interfaces[server] = interface
-        #self.queue_request('blockchain.headers.subscribe', [True], interface)
-        self.queue_request('blockchain.headers.subscribe', [], interface)
+        self.queue_request('blockchain.headers.subscribe', [True], interface)
         if server == self.default_server:
             self.switch_to_interface(server)
         #self.notify('interfaces')
@@ -814,7 +812,7 @@ class Network(util.DaemonThread):
         self.notify('updated')
 
     def request_header(self, interface, height):
-        interface.print_error("requesting header %d" % height)
+        #interface.print_error("requesting header %d" % height)
         self.queue_request('blockchain.block.headers', [height, 1], interface)
         interface.request = height
 
@@ -833,7 +831,7 @@ class Network(util.DaemonThread):
             self.connection_down(interface.server)
             return
 
-        if len(hex_header) != HDR_LEN*2:
+        if len(hex_header) != get_header_size(height)*2:
             interface.print_error('wrong header length', interface.request)
             self.connection_down(interface.server)
             return
@@ -986,17 +984,19 @@ class Network(util.DaemonThread):
     def init_headers_file(self):
         b = self.blockchains[0]
         filename = b.path()
-        len_checkpoints = len(constants.net.CHECKPOINTS)
-        length = HDR_LEN * len_checkpoints * CHUNK_LEN
-        if not os.path.exists(filename) or os.path.getsize(filename) < length:
+        # len_checkpoints = len(constants.net.CHECKPOINTS)
+        len_checkpoints = 0
+        # length = HDR_LEN * len_checkpoints * CHUNK_LEN
+        # if not os.path.exists(filename) or os.path.getsize(filename) < length:
+        if not os.path.exists(filename):
             with open(filename, 'wb') as f:
                 for i in range(len_checkpoints):
                     for height, header_data in b.checkpoints[i][2]:
-                        f.seek(height*HDR_LEN)
+                        f.seek(height*get_header_size(height))
                         bin_header = bfh(header_data)
                         f.write(bin_header)
         with b.lock:
-            b.update_size()
+            b.update_size(0)
 
     def run(self):
         self.init_headers_file()
@@ -1015,10 +1015,10 @@ class Network(util.DaemonThread):
         if not height or not hex_header:
             return
 
-        if len(hex_header) != HDR_LEN*2:
-            interface.print_error('wrong header length', interface.request)
-            self.connection_down(interface.server)
-            return
+        # if len(hex_header) != get_header_size(height)*2:
+        #     interface.print_error('wrong header length', interface.request)
+        #     self.connection_down(interface.server)
+        #     return
 
         header = blockchain.deserialize_header(bfh(hex_header), height)
         if height < self.max_checkpoint():

@@ -8,10 +8,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from electrum import Wallet, WalletStorage
-from electrum.util import UserCancelled, InvalidPassword
-from electrum.base_wizard import BaseWizard, HWD_SETUP_DECRYPT_WALLET
-from electrum.i18n import _
+from electrum_safecoin import Wallet, WalletStorage
+from electrum_safecoin.util import UserCancelled, InvalidPassword
+from electrum_safecoin.base_wizard import BaseWizard, HWD_SETUP_DECRYPT_WALLET
+from electrum_safecoin.i18n import _
 
 from .seed_dialog import SeedLayout, KeysLayout
 from .network_dialog import NetworkChoiceLayout
@@ -97,7 +97,7 @@ class InstallWizard(QDialog, MessageBoxMixin, BaseWizard):
     def __init__(self, config, app, plugins, storage):
         BaseWizard.__init__(self, config, storage)
         QDialog.__init__(self, None)
-        self.setWindowTitle('Electrum-SafeCoin  -  ' + _('Install Wizard'))
+        self.setWindowTitle('Electrum-Safecoin  -  ' + _('Install Wizard'))
         self.app = app
         self.config = config
         # Set for base base class
@@ -169,7 +169,7 @@ class InstallWizard(QDialog, MessageBoxMixin, BaseWizard):
         hbox2.addWidget(self.pw_e)
         hbox2.addStretch()
         vbox.addLayout(hbox2)
-        self.set_layout(vbox, title=_('Electrum-SafeCoin wallet'))
+        self.set_layout(vbox, title=_('Electrum-Safecoin wallet'))
 
         wallet_folder = os.path.dirname(self.storage.path)
 
@@ -276,7 +276,7 @@ class InstallWizard(QDialog, MessageBoxMixin, BaseWizard):
         path = self.storage.path
         if self.storage.requires_split():
             self.hide()
-            msg = _("The wallet '{}' contains multiple accounts, which are no longer supported since Electrum-SafeCoin 2.7.\n\n"
+            msg = _("The wallet '{}' contains multiple accounts, which are no longer supported since Electrum-Safecoin 2.7.\n\n"
                     "Do you want to split your wallet into multiple files?").format(path)
             if not self.question(msg):
                 return
@@ -540,10 +540,10 @@ class InstallWizard(QDialog, MessageBoxMixin, BaseWizard):
         return None
 
     def init_network(self, network):
-        message = _("Electrum-SafeCoin communicates with remote servers to get "
+        message = _("Electrum-Safecoin communicates with remote servers to get "
                   "information about your transactions and addresses. The "
                   "servers all fulfill the same purpose only differing in "
-                  "hardware. In most cases you simply want to let Electrum-SafeCoin "
+                  "hardware. In most cases you simply want to let Electrum-Safecoin "
                   "pick one at random.  However if you prefer feel free to "
                   "select a server manually.")
         choices = [_("Auto connect"), _("Select server manually")]

@@ -143,8 +143,8 @@ PEP440_PUBVER_PATTERN = re.compile('^((\d+)!)?'
                                    '([a-zA-Z]+\d+)?'
                                    '((\.[a-zA-Z]+\d+)*)$')
 REL_NOTES_PATTERN = re.compile('^#.+?(^[^#].+?)^#.+?', re.M | re.S)
-SDIST_NAME_PATTERN = re.compile('^Electrum-SafeCoin-(.*).tar.gz$')
-SDIST_DIR_TEMPLATE = 'Electrum-SafeCoin-{version}'
+SDIST_NAME_PATTERN = re.compile('^Electrum-Safecoin-(.*).tar.gz$')
+SDIST_DIR_TEMPLATE = 'Electrum-Safecoin-{version}'
 PPA_SOURCE_NAME = 'electrum-safecoin'
 PPA_ORIG_NAME_TEMPLATE = '%s_{version}.orig.tar.gz' % PPA_SOURCE_NAME
 CHANGELOG_TEMPLATE = """%s ({ppa_version}) {series}; urgency=medium

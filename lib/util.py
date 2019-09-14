@@ -1,4 +1,4 @@
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2011 Thomas Voegtlin
 #
 # Permission is hereby granted, free of charge, to any person
@@ -313,7 +313,7 @@ def android_data_dir():
     return PythonActivity.mActivity.getFilesDir().getPath() + '/data'
 
 def android_headers_dir():
-    d = android_ext_dir() + '/cash.z.electrum.electrum'
+    d = android_ext_dir() + '/cash.z.electrum.electrum_safecoin'
     if not os.path.exists(d):
         os.mkdir(d)
     return d
@@ -405,9 +405,9 @@ def user_dir():
     elif os.name == 'posix':
         return os.path.join(os.environ["HOME"], ".electrum-safecoin")
     elif "APPDATA" in os.environ:
-        return os.path.join(os.environ["APPDATA"], "Electrum-SafeCoin")
+        return os.path.join(os.environ["APPDATA"], "Electrum-Safecoin")
     elif "LOCALAPPDATA" in os.environ:
-        return os.path.join(os.environ["LOCALAPPDATA"], "Electrum-SafeCoin")
+        return os.path.join(os.environ["LOCALAPPDATA"], "Electrum-Safecoin")
     else:
         #raise Exception("No home directory found in environment variables.")
         return
@@ -506,14 +506,12 @@ def time_difference(distance_in_time, include_seconds):
         return "over %d years" % (round(distance_in_minutes / 525600))
 
 mainnet_block_explorers = {
-    'blockexplorer.com': ('https://explorer.safecoin.org/',
-                        {'tx': 'transactions/', 'addr': 'addresses/'}),
-    'system default': ('blockchain:/',
-                        {'tx': 'tx/', 'addr': 'address/'}),
+    'explorer.safecoin.org': ('https://explorer.safecoin.org/',
+                        {'tx': 'tx/', 'addr': 'address/'})
 }
 
 testnet_block_explorers = {
-    'testnet.z.cash': ('https://testnet.safecoin.org/',
+    'testnet.safecoin.org': ('https://testnet.safecoin.org/',
                        {'tx': 'tx/', 'addr': 'address/'}),
     'system default': ('blockchain:/',
                        {'tx': 'tx/', 'addr': 'address/'}),
@@ -524,7 +522,7 @@ def block_explorer_info():
     return testnet_block_explorers if constants.net.TESTNET else mainnet_block_explorers
 
 def block_explorer(config):
-    return config.get('block_explorer', 'blockexplorer.com')
+    return config.get('block_explorer', 'explorer.safecoin.org')
 
 def block_explorer_tuple(config):
     return block_explorer_info().get(block_explorer(config))

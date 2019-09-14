@@ -1,11 +1,16 @@
 import time
 from struct import pack
 
-from electrum.i18n import _
-from electrum.util import PrintError, UserCancelled
-from electrum.keystore import bip39_normalize_passphrase
-from electrum.bitcoin import serialize_xpub
+from electrum_safecoin.i18n import _
+from electrum_safecoin.util import PrintError, UserCancelled
+from electrum_safecoin.keystore import bip39_normalize_passphrase
+from electrum_safecoin.bitcoin import serialize_xpub
 
+from trezorlib.client import TrezorClient
+from trezorlib.exceptions import TrezorFailure, Cancelled, OutdatedFirmwareError
+from trezorlib.messages import WordRequestType, FailureType, RecoveryDeviceType
+import trezorlib.btc
+import trezorlib.device
 
 class GuiMixin(object):
     # Requires: self.proto, self.device
@@ -173,7 +178,7 @@ class TrezorClientBase(GuiMixin, PrintError):
     def get_xpub(self, bip32_path, xtype):
         address_n = self.expand_path(bip32_path)
         creating = False
-        node = self.get_public_node(address_n, creating).node
+        node = trezorlib.btc.get_public_node(address_n, creating).node
         return serialize_xpub(xtype, node.chain_code, node.public_key, node.depth, self.i4b(node.fingerprint), self.i4b(node.child_num))
 
     def toggle_passphrase(self):

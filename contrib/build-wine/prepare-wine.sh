@@ -122,7 +122,7 @@ $PYTHON -m pip install win_inet_pton==1.0.1
 $PYTHON -m pip install -r $here/../deterministic-build/requirements-binaries.txt
 
 # Install PyInstaller
-$PYTHON -m pip install pyinstaller
+$PYTHON -m pip install https://github.com/ecdsa/pyinstaller/archive/fix_2952.zip
 
 # Install ZBar
 download_if_not_exist $ZBAR_FILENAME "$ZBAR_URL"
@@ -152,4 +152,3 @@ cp libusb/MS32/dll/libusb-1.0.dll $WINEPREFIX/drive_c/python$PYTHON_VERSION/
 cp $WINEPREFIX/drive_c/python$PYTHON_VERSION/Lib/site-packages/PyQt5/Qt/bin/* $WINEPREFIX/drive_c/python$PYTHON_VERSION/
 
 echo "Wine is configured."
-

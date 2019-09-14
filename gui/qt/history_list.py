@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2015 Thomas Voegtlin
 #
 # Permission is hereby granted, free of charge, to any person
@@ -26,13 +26,13 @@
 import webbrowser
 import datetime
 
-from electrum.wallet import AddTransactionException, TX_HEIGHT_LOCAL
+from electrum_safecoin.wallet import AddTransactionException, TX_HEIGHT_LOCAL
 from .util import *
-from electrum.i18n import _
-from electrum.util import block_explorer_URL, profiler
+from electrum_safecoin.i18n import _
+from electrum_safecoin.util import block_explorer_URL, profiler
 
 try:
-    from electrum.plot import plot_history, NothingToPlotException
+    from electrum_safecoin.plot import plot_history, NothingToPlotException
 except:
     plot_history = None
 
@@ -393,7 +393,7 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
         try:
             self.do_export_history(self.wallet, filename, csv_button.isChecked())
         except (IOError, os.error) as reason:
-            export_error_label = _("Electrum-SafeCoin was unable to produce a transaction export.")
+            export_error_label = _("Electrum-Safecoin was unable to produce a transaction export.")
             self.parent.show_critical(export_error_label + "\n" + str(reason), title=_("Unable to export history"))
             return
         self.parent.show_message(_("Your wallet history has been successfully exported."))
@@ -414,5 +414,5 @@ class HistoryList(MyTreeWidget, AcceptFileDragDrop):
                 for line in lines:
                     transaction.writerow(line)
             else:
-                from electrum.util import json_encode
+                from electrum_safecoin.util import json_encode
                 f.write(json_encode(history))

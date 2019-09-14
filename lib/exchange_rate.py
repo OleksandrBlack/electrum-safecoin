@@ -41,12 +41,12 @@ class ExchangeBase(PrintError):
     def get_json(self, site, get_string):
         # APIs must have https
         url = ''.join(['https://', site, get_string])
-        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-SafeCoin'}, timeout=10)
+        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-Safecoin'}, timeout=10)
         return response.json()
 
     def get_csv(self, site, get_string):
         url = ''.join(['https://', site, get_string])
-        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-SafeCoin'})
+        response = requests.request('GET', url, headers={'User-Agent' : 'Electrum-Safecoin'})
         reader = csv.DictReader(response.content.decode().split('\n'))
         return list(reader)
 
@@ -142,7 +142,7 @@ class BitcoinAverage(ExchangeBase):
 class Bittrex(ExchangeBase):
     def get_rates(self, ccy):
         json = self.get_json('bittrex.com',
-                             '/api/v1.1/public/getticker?market=BTC-SAFE') #TODO
+                             '/api/v1.1/public/getticker?market=BTC-SAFE')
         quote_currencies = {}
         if not json.get('success', False):
             return quote_currencies
@@ -371,6 +371,6 @@ class FxThread(ThreadJob):
         return self.fiat_value(satoshis, self.history_rate(d_t))
 
     def timestamp_rate(self, timestamp):
-        from electrum.util import timestamp_to_datetime
+        from electrum_safecoin.util import timestamp_to_datetime
         date = timestamp_to_datetime(timestamp)
         return self.history_rate(date)

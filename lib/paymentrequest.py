@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2014 Thomas Voegtlin
 #
 # Permission is hereby granted, free of charge, to any person
@@ -47,8 +47,8 @@ from . import rsakey
 
 from .bitcoin import TYPE_ADDRESS
 
-REQUEST_HEADERS = {'Accept': 'application/safecoin-paymentrequest', 'User-Agent': 'Electrum-SafeCoin'}
-ACK_HEADERS = {'Content-Type':'application/safecoin-payment','Accept':'application/safecoin-paymentack','User-Agent':'Electrum-SafeCoin'}
+REQUEST_HEADERS = {'Accept': 'application/safecoin-paymentrequest', 'User-Agent': 'Electrum-Safecoin'}
+ACK_HEADERS = {'Content-Type':'application/safecoin-payment','Accept':'application/safecoin-paymentack','User-Agent':'Electrum-Safecoin'}
 
 ca_path = requests.certs.where()
 ca_list = None
@@ -267,7 +267,7 @@ class PaymentRequest:
         paymnt.transactions.append(bfh(raw_tx))
         ref_out = paymnt.refund_to.add()
         ref_out.script = util.bfh(transaction.Transaction.pay_script(TYPE_ADDRESS, refund_addr))
-        paymnt.memo = "Paid using Electrum-SafeCoin"
+        paymnt.memo = "Paid using Electrum-Safecoin"
         pm = paymnt.SerializeToString()
         payurl = urllib.parse.urlparse(pay_det.payment_url)
         try:

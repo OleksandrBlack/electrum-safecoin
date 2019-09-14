@@ -3,21 +3,24 @@ import hashlib
 import sys
 import traceback
 
-from electrum import bitcoin
-from electrum import constants
-from electrum.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
+from electrum_safecoin import bitcoin
+from electrum_safecoin import constants
+from electrum_safecoin.bitcoin import (TYPE_ADDRESS, int_to_hex, var_int,
                                    b58_address_to_hash160,
                                    hash160_to_b58_address)
-from electrum.i18n import _
-from electrum.plugins import BasePlugin
-from electrum.keystore import Hardware_KeyStore
-from electrum.transaction import Transaction
+from electrum_safecoin.i18n import _
+from electrum_safecoin.plugins import BasePlugin
+from electrum_safecoin.keystore import Hardware_KeyStore
+from electrum_safecoin.transaction import Transaction
 from ..hw_wallet import HW_PluginBase
-from electrum.util import print_error, is_verbose, bfh, bh2u, versiontuple
+from electrum_safecoin.util import print_error, is_verbose, bfh, bh2u, versiontuple
 
 
 def setAlternateCoinVersions(self, regular, p2sh):
-    apdu = [self.BTCHIP_CLA, 0x14, 0x00, 0x00, 0x02, regular, p2sh]
+    apdu = [ 0xE0, 0x14, 0x01, 0x05, 0x16, 0x1C, 0xB8, 0x1C, 0xBD, 0x01, 0x08]
+    apdu.extend("Safecoin".encode())
+    apdu.append(0x03)
+    apdu.extend("SAFE".encode())
     self.dongle.exchange(bytearray(apdu))
 
 try:
@@ -27,11 +30,11 @@ try:
     from btchip.btchipUtils import compress_public_key,format_transaction, get_regular_input_script, get_p2sh_input_script
     from btchip.btchipFirmwareWizard import checkFirmware, updateFirmware
     from btchip.btchipException import BTChipException
-    from .btchip_safecoin import btchip_safecoin, safecoinTransaction
+    from .btchip_zcash import btchip_zcash, zcashTransaction
     btchip.setAlternateCoinVersions = setAlternateCoinVersions
     BTCHIP = True
     BTCHIP_DEBUG = is_verbose
-except ImportError:
+except ImportError as e:
     BTCHIP = False
 
 MSG_NEEDS_FW_UPDATE_GENERIC = _('Firmware version too old. Please update at') + \
@@ -47,7 +50,7 @@ OVERWINTER_SUPPORT = '1.3.3'
 
 class Ledger_Client():
     def __init__(self, hidDevice):
-        self.dongleObject = btchip_safecoin(hidDevice)
+        self.dongleObject = btchip_zcash(hidDevice)
         self.preflightDone = False
 
     def is_pairable(self):
@@ -327,9 +330,6 @@ class Ledger_KeyStore(Hardware_KeyStore):
         pin = ""
         self.get_client() # prompt for the PIN before displaying the dialog if necessary
 
-        if tx.overwintered:
-            if not self.get_client_electrum().supports_overwinter():
-                self.give_error(MSG_NEEDS_FW_UPDATE_OVERWINTER)
         # Fetch inputs of the transaction to sign
         derivations = self.get_tx_derivations(tx)
         for txin in tx.inputs():
@@ -399,14 +399,14 @@ class Ledger_KeyStore(Hardware_KeyStore):
             for utxo in inputs:
                 sequence = int_to_hex(utxo[5], 4)
                 if tx.overwintered:
-                    txtmp = safecoinTransaction(bfh(utxo[0]))
+                    txtmp = zcashTransaction(bfh(utxo[0]))
                     tmp = bfh(utxo[3])[::-1]
                     tmp += bfh(int_to_hex(utxo[1], 4))
                     tmp += txtmp.outputs[utxo[1]].amount
                     chipInputs.append({'value' : tmp, 'sequence' : sequence})
                     redeemScripts.append(bfh(utxo[2]))
                 elif not p2shTransaction:
-                    txtmp = safecoinTransaction(bfh(utxo[0]))
+                    txtmp = zcashTransaction(bfh(utxo[0]))
                     trustedInput = self.get_client().getTrustedInput(txtmp, utxo[1])
                     trustedInput['sequence'] = sequence
                     chipInputs.append(trustedInput)
@@ -416,7 +416,6 @@ class Ledger_KeyStore(Hardware_KeyStore):
                     tmp += bfh(int_to_hex(utxo[1], 4))
                     chipInputs.append({'value' : tmp, 'sequence' : sequence})
                     redeemScripts.append(bfh(utxo[2]))
-
             # Sign all inputs
             firstTransaction = True
             inputIndex = 0
@@ -436,7 +435,8 @@ class Ledger_KeyStore(Hardware_KeyStore):
 
                 if tx.overwintered:
                     inputSignature = self.get_client().untrustedHashSign('',
-                                                                         pin, lockTime=tx.locktime,
+                                                                         '', lockTime=tx.locktime,
+                                                                         version=tx.version,
                                                                          overwintered=tx.overwintered)
                 outputData['outputData'] = txOutput
                 transactionOutput = outputData['outputData']
@@ -456,6 +456,7 @@ class Ledger_KeyStore(Hardware_KeyStore):
                                                                 overwintered=tx.overwintered)
                     inputSignature = self.get_client().untrustedHashSign(inputsPaths[inputIndex],
                                                                          pin, lockTime=tx.locktime,
+                                                                         version=tx.version,
                                                                          overwintered=tx.overwintered)
                     inputSignature[0] = 0x30 # force for 1.4.9+
                     signatures.append(inputSignature)
@@ -484,7 +485,9 @@ class Ledger_KeyStore(Hardware_KeyStore):
                     else:
                         # Sign input with the provided PIN
                         inputSignature = self.get_client().untrustedHashSign(inputsPaths[inputIndex],
-                                                                             pin, lockTime=tx.locktime)
+                                                                             pin, lockTime=tx.locktime,
+                                                                             version=tx.version,
+                                                                             overwintered=tx.overwintered)
                         inputSignature[0] = 0x30 # force for 1.4.9+
                         signatures.append(inputSignature)
                         inputIndex = inputIndex + 1
@@ -539,7 +542,14 @@ class LedgerPlugin(HW_PluginBase):
                    (0x2581, 0x3b7c), # HW.1 ledger production
                    (0x2581, 0x4b7c), # HW.1 ledger test
                    (0x2c97, 0x0000), # Blue
-                   (0x2c97, 0x0001)  # Nano-S
+                   (0x2c97, 0x0001), # Nano-S
+                   (0x2c97, 0x0004), # Nano-X
+                   (0x2c97, 0x0005), # RFU
+                   (0x2c97, 0x0006), # RFU
+                   (0x2c97, 0x0007), # RFU
+                   (0x2c97, 0x0008), # RFU
+                   (0x2c97, 0x0009), # RFU
+                   (0x2c97, 0x000a)  # RFU
                  ]
 
     def __init__(self, parent, config, name):
@@ -577,7 +587,7 @@ class LedgerPlugin(HW_PluginBase):
         device_id = device_info.device.id_
         client = devmgr.client_by_id(device_id)
         client.handler = self.create_handler(wizard)
-        client.get_xpub("m/44'/133'", 'standard') # TODO replace by direct derivation once Nano S > 1.1
+        client.get_xpub("m/44'/147'", 'standard') # TODO replace by direct derivation once Nano S > 1.1
 
     def get_xpub(self, device_id, derivation, xtype, wizard):
         devmgr = self.device_manager()

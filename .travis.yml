@@ -22,8 +22,8 @@ matrix:
     os: linux
     python: "3.6"
 before_install:
-- source contrib/safecoin/travis/electrum_version_env.sh
-- echo electrum-safecoin version is $ELECTRUM_SAFECOIN_VERSION
+- source contrib/safecoin/travis/electrum_safecoin_version_env.sh
+- echo electrum-safecoin version is $ELECTRUM_SAFE_VERSION
 - mkdir -p build && cp contrib/safecoin/travis/* ./build/
 - if [[ -n $TRAVIS_TAG ]] && [[ $TRAVIS_OS_NAME == 'osx' ]]; then
       ./build/before_install-osx.sh;
@@ -54,21 +54,21 @@ script:
 deploy:
 - provider: releases
   api_key:
-    secure: G+TcxPJSQQ2bTNhkTX4aofnsiNFrzbuFTGty/+jIKDb/IQ69etXS9Ulu8KGD71VjEdXugFWdus+2a8fFSCSg79+AvrSxKa1ztXQ2q6tmovRkUcnF5Bkbc+ORLm3+FMZhonvMg+MLnHS3hnvJL/CZU0Pn2dkfODn7/t+MsGs99MN0G44qimq+FCu+YHaKVcGgiTs1I6nextIH+lnPw5qE6VxTQKdFp4PTHqY1qZJWamReVvtyMnfGpa+QwcKf43dXzZrHMLfFprfzEi1DExrhRi0a8RZlFWmAtkwH9zzJXzqOEmivniLfeALJzWkBJG4I2Fu7QSQhvPllhnt5uGdV3pgmHZUxL1DZckrqVG5b6P/Cnmbu0hWXbkPpZ7sXQ4X7wGhAVgH2sRPF1SfE9XvqDsmKvpspdKGmI+9yKoaWekbt8igfJ8jRBK4yRJAt+F/waeXkj7HJhSPIYg9wNvYCnCmoih4brRcTE4nyJBo/ySY3DVocflS3QGoClOrBpwXGgzwaUzBamRhJeCUe9ockPJyUs9DkuBIdsPfhq0nZfZFMhNBtpzm1hPGE92NojUi+DcI12WqweUqDWZzY/02MmfHLeN6mGgjTWvgOwnq1fvc6s7sVy7nANtA6UseWF2KUBYfuMKAxTU4WadpZ102znz4XiL4B7TILKJMU+Ht+a+c=
+    secure: FuH5P/nqCXNTfgCCrK+34+InbCO7U14DhGPxhKyJl4KuimuRdsmcyD/IPTIyTJ7mkElg/x/wkj7g1r6ajajZPncYd7CoV3wlTSC/XN5EyotIFOw4dz6YssqhrkDGsms07sTTzeMdoXWqS02eiMYb3FzJn0Fd3Gk0YtF3PgqmQEkB0eh83G7cQSqUpcxcs2hOkQ0bDDsSad3AdJSG0dFDqrbdxEu1hzQZJ8v59cxiV4Wo7ya6MpNrX2egWpJR14vuEjI8rFh1ixx4gpw+RcQIi7KlAz/EOb9nE8CsumoDUOjql6COZotD4oqT6Q7puj84iz5OFD7XwJ3cedJkWSmz8eQBXrqOu2TVsfUcL3NPZ61tXcfKo2LEVZzj5NenZJ4I+3QvywyNpJsAIf/VtIi0KYMQd6I4J2C1Tdxg2zXR0bDDKF1DBMRyUdl5Twk+oRs+B2vXlgiCq/GE+FU4EhgPKSav8tZEYMvbX5ec2c/iX00GeIXtz8yXvf/KZAlUzJvvbYjYqH4OJTGq2RwwsPQ6HD7DvBDRtTo2+9lmtG0VQgyK/F+bNTIqBvWc/gQeV7BwpI/7SjWrWyIsN5n/J9b+bU1N1Q9NPqUw/070mgdJ147cOMFV9c/wWO2VoZKeYijIjWNtNQIusrPPyu2+4/ZfC8mOAvX9o3w5dqZdK2CVlNw=
   file:
-  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFECOIN_VERSION-macosx.dmg
+  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFE_VERSION-macosx.dmg
   on:
     repo: OleksandrBlack/electrum-safecoin
     tags: true
     condition: "$TRAVIS_OS_NAME = osx"
 - provider: releases
   api_key:
-    secure: G+TcxPJSQQ2bTNhkTX4aofnsiNFrzbuFTGty/+jIKDb/IQ69etXS9Ulu8KGD71VjEdXugFWdus+2a8fFSCSg79+AvrSxKa1ztXQ2q6tmovRkUcnF5Bkbc+ORLm3+FMZhonvMg+MLnHS3hnvJL/CZU0Pn2dkfODn7/t+MsGs99MN0G44qimq+FCu+YHaKVcGgiTs1I6nextIH+lnPw5qE6VxTQKdFp4PTHqY1qZJWamReVvtyMnfGpa+QwcKf43dXzZrHMLfFprfzEi1DExrhRi0a8RZlFWmAtkwH9zzJXzqOEmivniLfeALJzWkBJG4I2Fu7QSQhvPllhnt5uGdV3pgmHZUxL1DZckrqVG5b6P/Cnmbu0hWXbkPpZ7sXQ4X7wGhAVgH2sRPF1SfE9XvqDsmKvpspdKGmI+9yKoaWekbt8igfJ8jRBK4yRJAt+F/waeXkj7HJhSPIYg9wNvYCnCmoih4brRcTE4nyJBo/ySY3DVocflS3QGoClOrBpwXGgzwaUzBamRhJeCUe9ockPJyUs9DkuBIdsPfhq0nZfZFMhNBtpzm1hPGE92NojUi+DcI12WqweUqDWZzY/02MmfHLeN6mGgjTWvgOwnq1fvc6s7sVy7nANtA6UseWF2KUBYfuMKAxTU4WadpZ102znz4XiL4B7TILKJMU+Ht+a+c=
+    secure: FuH5P/nqCXNTfgCCrK+34+InbCO7U14DhGPxhKyJl4KuimuRdsmcyD/IPTIyTJ7mkElg/x/wkj7g1r6ajajZPncYd7CoV3wlTSC/XN5EyotIFOw4dz6YssqhrkDGsms07sTTzeMdoXWqS02eiMYb3FzJn0Fd3Gk0YtF3PgqmQEkB0eh83G7cQSqUpcxcs2hOkQ0bDDsSad3AdJSG0dFDqrbdxEu1hzQZJ8v59cxiV4Wo7ya6MpNrX2egWpJR14vuEjI8rFh1ixx4gpw+RcQIi7KlAz/EOb9nE8CsumoDUOjql6COZotD4oqT6Q7puj84iz5OFD7XwJ3cedJkWSmz8eQBXrqOu2TVsfUcL3NPZ61tXcfKo2LEVZzj5NenZJ4I+3QvywyNpJsAIf/VtIi0KYMQd6I4J2C1Tdxg2zXR0bDDKF1DBMRyUdl5Twk+oRs+B2vXlgiCq/GE+FU4EhgPKSav8tZEYMvbX5ec2c/iX00GeIXtz8yXvf/KZAlUzJvvbYjYqH4OJTGq2RwwsPQ6HD7DvBDRtTo2+9lmtG0VQgyK/F+bNTIqBvWc/gQeV7BwpI/7SjWrWyIsN5n/J9b+bU1N1Q9NPqUw/070mgdJ147cOMFV9c/wWO2VoZKeYijIjWNtNQIusrPPyu2+4/ZfC8mOAvX9o3w5dqZdK2CVlNw=
   file:
-  - build/electrum-safecoin/dist/Electrum-Safecoin-$ELECTRUM_SAFECOIN_VERSION.tar.gz
-  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFECOIN_VERSION-setup-win32.exe
-  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFECOIN_VERSION-setup-win64.exe
-  - build/electrum-safecoin/bin/Electrum_Safecoin-$ELECTRUM_ZCASH_APK_VERSION-release-unsigned.apk
+  - build/electrum-safecoin/dist/Electrum-Safecoin-$ELECTRUM_SAFE_VERSION.tar.gz
+  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFE_VERSION-setup-win32.exe
+  - build/electrum-safecoin/dist/electrum-safecoin-$ELECTRUM_SAFE_VERSION-setup-win64.exe
+  - build/electrum-safecoin/bin/Electrum_Safecoin-$ELECTRUM_SAFE_APK_VERSION-release-unsigned.apk
   on:
     repo: OleksandrBlack/electrum-safecoin
     tags: true

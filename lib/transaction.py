@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2011 Thomas Voegtlin
 #
 # Permission is hereby granted, free of charge, to any person
@@ -36,7 +36,7 @@ import traceback
 import sys
 
 #
-# Workalike python implementation of Bitcoin's CDataStream class.
+# Workalike python implementation of Safecoin's CDataStream class.
 #
 from .keystore import xpubkey_to_address, xpubkey_to_pubkey
 from pyblake2 import blake2b
@@ -46,6 +46,8 @@ OVERWINTERED_VERSION_GROUP_ID = 0x03C48270
 OVERWINTER_BRANCH_ID = 0x5BA81B19
 SAPLING_VERSION_GROUP_ID = 0x892F2085
 SAPLING_BRANCH_ID = 0x76B809BB
+BUBBLES_BRANCH_ID = 0x821A451C
+DIFFADJ_BRANCH_ID = 0x930B540D
 
 
 class TransactionVersionError(Exception):
@@ -84,7 +86,7 @@ class BCDataStream(object):
         # 0 to 252 :  1-byte-length followed by bytes (if any)
         # 253 to 65,535 : byte'253' 2-byte-length followed by bytes
         # 65,536 to 4,294,967,295 : byte '254' 4-byte-length followed by bytes
-        # ... and the Bitcoin client is coded to understand:
+        # ... and the Safecoin client is coded to understand:
         # greater than 4,294,967,295 : byte '255' 8-byte-length followed by bytes of string
         # ... but I don't think it actually handles any strings that big.
         if self.input is None:
@@ -403,7 +405,7 @@ def get_address_from_output_script(_bytes, *, net=None):
     if match_decoded(decoded, match):
         return TYPE_PUBKEY, bh2u(decoded[0][1])
 
-    # Pay-by-Bitcoin-address TxOuts look like:
+    # Pay-by-Safecoin-address TxOuts look like:
     # DUP HASH160 20 BYTES:... EQUALVERIFY CHECKSIG
     match = [ opcodes.OP_DUP, opcodes.OP_HASH160, opcodes.OP_PUSHDATA4, opcodes.OP_EQUALVERIFY, opcodes.OP_CHECKSIG ]
     if match_decoded(decoded, match):
@@ -834,11 +836,11 @@ class Transaction:
             nHeader = int_to_hex(0x80000000 | version, 4)
             nVersionGroupId = int_to_hex(self.versionGroupId, 4)
             s_prevouts = bfh(''.join(self.serialize_outpoint(txin) for txin in inputs))
-            hashPrevouts = blake2b(s_prevouts, digest_size=32, person=b'SafecoinPrevoutHash').hexdigest()
+            hashPrevouts = blake2b(s_prevouts, digest_size=32, person=b'ZcashPrevoutHash').hexdigest()
             s_sequences = bfh(''.join(int_to_hex(txin.get('sequence', 0xffffffff - 1), 4) for txin in inputs))
-            hashSequence = blake2b(s_sequences, digest_size=32, person=b'SafecoinSequencHash').hexdigest()
+            hashSequence = blake2b(s_sequences, digest_size=32, person=b'ZcashSequencHash').hexdigest()
             s_outputs = bfh(''.join(self.serialize_output(o) for o in outputs))
-            hashOutputs = blake2b(s_outputs, digest_size=32, person=b'SafecoinOutputsHash').hexdigest()
+            hashOutputs = blake2b(s_outputs, digest_size=32, person=b'ZcashOutputsHash').hexdigest()
             joinSplits = self.joinSplits
             #if joinSplits is None:
             #    hashJoinSplits = '00'*32
@@ -993,7 +995,7 @@ class Transaction:
                     # add signature
                     if self.overwintered:
                         data = bfh(self.serialize_preimage(i))
-                        person = b'SafecoinSigHash' + SAPLING_BRANCH_ID.to_bytes(4, 'little')
+                        person = b'ZcashSigHash' + DIFFADJ_BRANCH_ID.to_bytes(4, 'little')
                         pre_hash = blake2b(data, digest_size=32, person=person).digest()
                     else:
                         pre_hash = Hash(bfh(self.serialize_preimage(i)))

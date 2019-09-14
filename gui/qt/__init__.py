@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2012 thomasv@gitorious
 #
 # Permission is hereby granted, free of charge, to any person
@@ -38,15 +38,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import PyQt5.QtCore as QtCore
 
-from electrum.i18n import _, set_language
-from electrum.plugins import run_hook
-from electrum import WalletStorage
-# from electrum.synchronizer import Synchronizer
-# from electrum.verifier import SPV
-# from electrum.util import DebugMem
-from electrum.util import (UserCancelled, print_error,
+from electrum_safecoin.i18n import _, set_language
+from electrum_safecoin.plugins import run_hook
+from electrum_safecoin import WalletStorage
+# from electrum_safecoin.synchronizer import Synchronizer
+# from electrum_safecoin.verifier import SPV
+# from electrum_safecoin.util import DebugMem
+from electrum_safecoin.util import (UserCancelled, print_error,
                                 WalletFileException, BitcoinException)
-# from electrum.wallet import Abstract_Wallet
+# from electrum_safecoin.wallet import Abstract_Wallet
 
 from .installwizard import InstallWizard, GoBack
 
@@ -56,7 +56,7 @@ try:
 except Exception as e:
     print(e)
     print("Error: Could not find icons file.")
-    print("Please run 'pyrcc5 icons.qrc -o gui/qt/icons_rc.py', and reinstall Electrum-SafeCoin")
+    print("Please run 'pyrcc5 icons.qrc -o gui/qt/icons_rc.py', and reinstall Electrum-Safecoin")
     sys.exit(1)
 
 from .util import *   # * needed for plugins
@@ -111,7 +111,7 @@ class ElectrumGui:
         # init tray
         self.dark_icon = self.config.get("dark_icon", False)
         self.tray = QSystemTrayIcon(self.tray_icon(), None)
-        self.tray.setToolTip('Electrum-SafeCoin')
+        self.tray.setToolTip('Electrum-Safecoin')
         self.tray.activated.connect(self.tray_activated)
         self.build_tray_menu()
         self.tray.show()
@@ -133,7 +133,7 @@ class ElectrumGui:
             submenu.addAction(_("Close"), window.close)
         m.addAction(_("Dark/Light"), self.toggle_tray_icon)
         m.addSeparator()
-        m.addAction(_("Exit Electrum-SafeCoin"), self.close)
+        m.addAction(_("Exit Electrum-Safecoin"), self.close)
 
     def tray_icon(self):
         if self.dark_icon:
@@ -165,7 +165,7 @@ class ElectrumGui:
 
     def show_network_dialog(self, parent):
         if not self.daemon.network:
-            parent.show_warning(_('You are using Electrum-SafeCoin in offline mode; restart Electrum-SafeCoin if you want to get connected'), title=_('Offline'))
+            parent.show_warning(_('You are using Electrum-Safecoin in offline mode; restart Electrum-Safecoin if you want to get connected'), title=_('Offline'))
             return
         if self.nd:
             self.nd.on_update()

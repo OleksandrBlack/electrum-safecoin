@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Electrum - lightweight Bitcoin client
+# Electrum - lightweight Safecoin client
 # Copyright (C) 2011 thomasv@gitorious
 #
 # Permission is hereby granted, free of charge, to any person
@@ -261,17 +261,16 @@ def hash_160(public_key):
 
 
 def hash160_to_b58_address(h160, addrtype):
-    s = bytes(addrtype)
+    s = addrtype
     s += h160
     return base_encode(s+Hash(s)[0:4], base=58)
 
 
 def b58_address_to_hash160(addr):
     addr = to_bytes(addr, 'ascii')
-    #_bytes = base_decode(addr, 26, base=58)
-    #return [_bytes[0], _bytes[1]], _bytes[2:22]
-    _bytes = base_decode(addr, 25, base=58)
-    return _bytes[0], _bytes[1:21]
+    _bytes = base_decode(addr, 26, base=58)
+    return _bytes[0:2], _bytes[2:22]
+
 
 def hash160_to_p2pkh(h160, *, net=None):
     if net is None:
@@ -309,11 +308,11 @@ def address_to_script(addr, *, net=None):
     if net is None:
         net = constants.net
     addrtype, hash_160 = b58_address_to_hash160(addr)
-    if addrtype == net.ADDRTYPE_P2PKH[0]:
+    if addrtype == net.ADDRTYPE_P2PKH:
         script = '76a9'                                      # op_dup, op_hash_160
         script += push_script(bh2u(hash_160))
         script += '88ac'                                     # op_equalverify, op_checksig
-    elif addrtype == net.ADDRTYPE_P2SH[0]:
+    elif addrtype == net.ADDRTYPE_P2SH:
         script = 'a9'                                        # op_hash_160
         script += push_script(bh2u(hash_160))
         script += '87'                                       # op_equal
@@ -358,7 +357,7 @@ def base_encode(v, base):
         result.append(chars[mod])
         long_value = div
     result.append(chars[long_value])
-    # Bitcoin does a little leading-zero-compression:
+    # Safecoin does a little leading-zero-compression:
     # leading 0-bytes in the input become leading-1s
     nPad = 0
     for c in v:
@@ -512,10 +511,9 @@ def is_b58_address(addr):
         addrtype, h = b58_address_to_hash160(addr)
     except Exception as e:
         return False
-    if addrtype != constants.net.ADDRTYPE_P2PKH[0] and addrtype != constants.net.ADDRTYPE_P2SH[0]:
-    #if addrtype not in [constants.net.ADDRTYPE_P2PKH, constants.net.ADDRTYPE_P2SH]:
+    if addrtype not in [constants.net.ADDRTYPE_P2PKH, constants.net.ADDRTYPE_P2SH]:
         return False
-    return addr == hash160_to_b58_address(h, [addrtype])
+    return addr == hash160_to_b58_address(h, addrtype)
 
 def is_address(addr):
     return is_b58_address(addr)
@@ -907,7 +905,7 @@ def xpub_from_xprv(xprv):
 
 
 def bip32_root(seed, xtype):
-    I = hmac.new(b"Bitcoin seed", seed, hashlib.sha512).digest()
+    I = hmac.new(b"Safecoin seed", seed, hashlib.sha512).digest()
     master_k = I[0:32]
     master_c = I[32:]
     K, cK = get_pubkeys_from_secret(master_k)

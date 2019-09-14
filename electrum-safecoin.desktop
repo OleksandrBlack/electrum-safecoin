@@ -1,22 +1,21 @@
-# If you want Electrum to appear in a Linux app launcher ("start menu"), install this by doing:
-# sudo desktop-file-install electrum-ltc.desktop
+# If you want Electrum-Safecoin to appear in a Linux app launcher ("start menu"), install this by doing:
+# sudo desktop-file-install electrum-safecoin.desktop
 
 [Desktop Entry]
-Comment=SafeCoin wallet
-Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-safecoin %u"
-GenericName[en_US]=Electrum SafeCoin Wallet
+Comment=Lightweight Safecoin Client
+Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\" electrum-safecoin %u"
+GenericName[en_US]=Safecoin Wallet
 GenericName=Safecoin Wallet
-Icon=electrum-safecoin
-Name[en_US]=Electrum SafeCoin Wallet
-Name=Electrum SafeCoin Wallet
+Icon=electrum-safecoin.png
+Name[en_US]=Electrum-Safecoin Wallet
+Name=Electrum-Safecoin Wallet
 Categories=Finance;Network;
-StartupNotify=true
-StartupWMClass=electrum-safecoin
+StartupNotify=false
 Terminal=false
 Type=Application
 MimeType=x-scheme-handler/safecoin;
 Actions=Testnet;
 
 [Desktop Action Testnet]
-Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\"; electrum-safecoin --testnet %u"
+Exec=sh -c "PATH=\"\\$HOME/.local/bin:\\$PATH\" electrum-safecoin --testnet %u"
 Name=Testnet mode

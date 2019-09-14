@@ -1,4 +1,4 @@
-from electrum.util import PrintError
+from electrum_safecoin.util import PrintError
 
 
 class TrezorTransport(PrintError):

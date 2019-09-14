@@ -3,21 +3,21 @@ from kivy.factory import Factory
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 
-from electrum.util import base_units
-from electrum.i18n import languages
-from electrum_gui.kivy.i18n import _
-from electrum.plugins import run_hook
-from electrum import coinchooser
+from electrum_safecoin.util import base_units
+from electrum_safecoin.i18n import languages
+from electrum_safecoin_gui.kivy.i18n import _
+from electrum_safecoin.plugins import run_hook
+from electrum_safecoin import coinchooser
 
 from .choice_dialog import ChoiceDialog
 
 Builder.load_string('''
 #:import partial functools.partial
-#:import _ electrum_gui.kivy.i18n._
+#:import _ electrum_safecoin_gui.kivy.i18n._
 
 <SettingsDialog@Popup>
     id: settings
-    title: _('Electrum-SafeCoin Settings')
+    title: _('Electrum-Safecoin Settings')
     disable_pin: False
     use_encryption: False
     BoxLayout:
